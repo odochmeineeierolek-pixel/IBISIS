@@ -13,6 +13,8 @@ jobs:
         run: |
           if (-not (Test-Path projekt.zip)) { Write-Error "projekt.zip fehlt im Repository. Bitte die Datei projekt.zip hochladen."; exit 1 }
           Expand-Archive -Path projekt.zip -DestinationPath . -Force
+          # Überflüssige Dateien aus früheren Uploads entfernen (stören den Rust-Build)
+          Remove-Item -Path Cargo.toml, Cargo.lock, build.rs, tauri.conf.json -ErrorAction SilentlyContinue
           Get-ChildItem -Recurse src-tauri | Select-Object -First 30 FullName
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
