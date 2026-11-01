@@ -1,8 +1,6 @@
 name: Windows-Installer bauen
 on:
   workflow_dispatch:
-  push:
-    tags: ["v*"]
 permissions:
   contents: write
 jobs:
@@ -10,6 +8,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Projekt aus projekt.zip entpacken
+        shell: pwsh
+        run: |
+          if (-not (Test-Path projekt.zip)) { Write-Error "projekt.zip fehlt im Repository. Bitte die Datei projekt.zip hochladen."; exit 1 }
+          Expand-Archive -Path projekt.zip -DestinationPath . -Force
+          Get-ChildItem -Recurse src-tauri | Select-Object -First 30 FullName
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
       - uses: dtolnay/rust-toolchain@stable
