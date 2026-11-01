@@ -1,0 +1,11 @@
+{
+  "identifier": "default",
+  "description": "Rechte des Hauptfensters",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "updater:default",
+    "process:allow-restart",
+    "dialog:allow-open"
+  ]
+}
